@@ -1,7 +1,108 @@
-GET /api/users?address=0x...
-GET /api/users?username=alice
-POST /api/users
-POST /api/activity
-GET /api/activity?address=0xabc...&type=send_message&page=1&limit=20
-GET /api/users?page=1&limit=20
-GET /api/stats
+🔐 SECURE API ROUTES - ShardTalk
+
+═══════════════════════════════════════════════════════════════
+
+📋 PUBLIC ENDPOINTS (No Authentication Required)
+═══════════════════════════════════════════════════════════════
+
+🔍 User Management
+GET  /api/users?address=0x...     - Get user by address
+GET  /api/users?username=...      - Check username availability  
+POST /api/users                   - Create/update user profile
+
+📊 Activity Tracking  
+GET  /api/activity?address=0x...  - Get user activity logs
+POST /api/activity                - Log user activity
+
+🔑 Authentication
+POST /api/auth                    - Generate JWT token
+
+═══════════════════════════════════════════════════════════════
+
+🛡️ PROTECTED ENDPOINTS (Authentication Required)
+═══════════════════════════════════════════════════════════════
+
+👑 Admin Only (Requires Admin Token/API Key)
+GET  /api/users?page=1            - List all users (paginated)
+GET  /api/stats                   - Get application statistics
+GET  /api/admin/keys              - List all API keys
+POST /api/admin/keys              - Create new API key
+
+═══════════════════════════════════════════════════════════════
+
+🔐 AUTHENTICATION METHODS
+═══════════════════════════════════════════════════════════════
+
+1️⃣ JWT Token Authentication
+   Header: Authorization: Bearer <jwt-token>
+   Generate: POST /api/auth with {address, role}
+
+2️⃣ API Key Authentication  
+   Header: X-API-Key: <api-key>
+   Generate: POST /api/admin/keys (admin only)
+
+═══════════════════════════════════════════════════════════════
+
+⚡ RATE LIMITING
+═══════════════════════════════════════════════════════════════
+
+/users GET     - 100 requests / 15 minutes
+/users POST    - 50 requests / 15 minutes  
+/activity GET  - 100 requests / 15 minutes
+/activity POST - 200 requests / 15 minutes
+/stats GET     - 50 requests / 15 minutes
+/auth POST     - 10 requests / 15 minutes
+/admin/keys    - 5-20 requests / 15 minutes
+
+═══════════════════════════════════════════════════════════════
+
+🛡️ SECURITY FEATURES
+═══════════════════════════════════════════════════════════════
+
+✅ JWT Token Authentication
+✅ API Key Authentication  
+✅ Rate Limiting
+✅ CORS Protection
+✅ Input Validation
+✅ XSS Prevention
+✅ MongoDB Security
+✅ Role-based Access Control
+
+═══════════════════════════════════════════════════════════════
+
+📖 USAGE EXAMPLES
+═══════════════════════════════════════════════════════════════
+
+# Generate JWT Token
+curl -X POST http://localhost:3000/api/auth \
+  -H "Content-Type: application/json" \
+  -d '{"address": "0x...", "role": "user"}'
+
+# Use JWT Token
+curl -H "Authorization: Bearer <token>" \
+  http://localhost:3000/api/stats
+
+# Use API Key
+curl -H "X-API-Key: <api-key>" \
+  http://localhost:3000/api/stats
+
+# Create API Key (Admin)
+curl -X POST http://localhost:3000/api/admin/keys \
+  -H "X-API-Key: <admin-key>" \
+  -H "Content-Type: application/json" \
+  -d '{"description": "My API Key"}'
+
+═══════════════════════════════════════════════════════════════
+
+🔧 ENVIRONMENT SETUP
+═══════════════════════════════════════════════════════════════
+
+Required in .env.local:
+JWT_SECRET=your-64-char-secret
+API_KEY_SECRET=your-64-char-secret  
+ALLOWED_ORIGINS=http://localhost:3000
+MONGODB_URI=mongodb://localhost:27017/shardtalk
+
+See SETUP_GUIDE.md for detailed instructions!
+
+═══════════════════════════════════════════════════════════════

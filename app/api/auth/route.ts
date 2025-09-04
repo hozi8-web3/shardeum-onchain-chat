@@ -1,10 +1,11 @@
 import { NextRequest } from 'next/server'
-import { getMongoDb } from '@/lib/mongodb'
 import { 
-  requireAuth, 
+  generateToken, 
   checkRateLimit, 
   validateOrigin, 
-  corsHeaders 
+  corsHeaders, 
+  validateAddress,
+  sanitizeInput 
 } from '@/lib/auth'
 
 export async function OPTIONS(req: NextRequest) {
@@ -14,7 +15,7 @@ export async function OPTIONS(req: NextRequest) {
   })
 }
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     // CORS check
     if (!validateOrigin(req)) {
@@ -26,7 +27,7 @@ export async function GET(req: NextRequest) {
 
     // Rate limiting
     const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
-    const rateLimit = checkRateLimit(`stats_get:${clientIP}`, { windowMs: 15 * 60 * 1000, maxRequests: 50 })
+    const rateLimit = checkRateLimit(`auth_post:${clientIP}`, { windowMs: 15 * 60 * 1000, maxRequests: 10 })
     
     if (!rateLimit.allowed) {
       return new Response(JSON.stringify({ 
@@ -37,59 +38,60 @@ export async function GET(req: NextRequest) {
         headers: {
           ...corsHeaders,
           'Retry-After': Math.ceil((rateLimit.resetTime - Date.now()) / 1000).toString(),
-          'X-RateLimit-Limit': '50',
+          'X-RateLimit-Limit': '10',
           'X-RateLimit-Remaining': '0',
           'X-RateLimit-Reset': rateLimit.resetTime.toString()
         }
       })
     }
 
-    // Require authentication for stats (admin only)
-    const auth = requireAuth('admin')(req)
-    if (!auth.success) {
-      return new Response(JSON.stringify({ error: auth.error }), { 
-        status: auth.statusCode || 401,
+    const body = await req.json()
+    const address = sanitizeInput(body.address || '').toLowerCase()
+    const role = sanitizeInput(body.role || 'user') as 'user' | 'admin'
+
+    // Validate inputs
+    if (!address) {
+      return new Response(JSON.stringify({ error: 'address is required' }), { 
+        status: 400,
         headers: corsHeaders
       })
     }
 
-    const db = await getMongoDb()
+    if (!validateAddress(address)) {
+      return new Response(JSON.stringify({ error: 'Invalid address format' }), { 
+        status: 400,
+        headers: corsHeaders
+      })
+    }
 
-    const [userCount, activityCount, recentUniqueWallets] = await Promise.all([
-      db.collection('users').estimatedDocumentCount(),
-      db.collection('activity').estimatedDocumentCount(),
-      db.collection('activity').distinct('address', { createdAt: { $gte: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7) } })
-    ])
+    if (!['user', 'admin'].includes(role)) {
+      return new Response(JSON.stringify({ error: 'Invalid role' }), { 
+        status: 400,
+        headers: corsHeaders
+      })
+    }
 
-    const last24h = await db.collection('activity').aggregate([
-      { $match: { createdAt: { $gte: new Date(Date.now() - 1000 * 60 * 60 * 24) } } },
-      { $group: { _id: '$type', count: { $sum: 1 } } }
-    ]).toArray()
+    // Generate JWT token
+    const token = generateToken(address, role)
 
-    const byType: Record<string, number> = {}
-    for (const r of last24h) byType[r._id as string] = r.count as number
-
-    return new Response(JSON.stringify({
-      users: userCount,
-      activities: activityCount,
-      uniqueWallets7d: recentUniqueWallets.length,
-      last24hByType: byType,
+    return new Response(JSON.stringify({ 
+      token,
+      expiresIn: '24h',
+      role 
     }), { 
       status: 200,
       headers: {
         ...corsHeaders,
-        'X-RateLimit-Limit': '50',
+        'X-RateLimit-Limit': '10',
         'X-RateLimit-Remaining': rateLimit.remaining.toString(),
         'X-RateLimit-Reset': rateLimit.resetTime.toString()
       }
     })
   } catch (error) {
-    console.error('Error in stats GET:', error)
+    console.error('Error in auth POST:', error)
     return new Response(JSON.stringify({ error: 'Internal server error' }), { 
       status: 500,
       headers: corsHeaders
     })
   }
 }
-
-

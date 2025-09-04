@@ -18,6 +18,10 @@ A **decentralized chat application** built on the **Shardeum Unstablenet** block
 - 🎨 **Dynamic Avatars**: Unique avatars generated from wallet addresses
 - 🛡️ **Input Sanitization**: Protection against harmful HTML content
 - 📊 **Message History**: View all past messages from the blockchain
+- 🔒 **Enterprise Security**: JWT authentication, API keys, rate limiting
+- 🗄️ **MongoDB Integration**: Secure database with authentication and CORS protection
+- 🚦 **Rate Limiting**: Protection against API abuse
+- 🔑 **Role-Based Access**: Admin and user permission levels
 
 ## 🏗️ Architecture
 
@@ -33,6 +37,35 @@ A **decentralized chat application** built on the **Shardeum Unstablenet** block
 - **Responsive Design**: Mobile-first approach with TailwindCSS
 - **Type Safety**: Full TypeScript implementation
 
+## 🔒 Security Features
+
+ShardTalk includes enterprise-level security features:
+
+### 🔐 Authentication & Authorization
+- **JWT Token Authentication**: Secure token-based authentication for users
+- **API Key Authentication**: Admin-level access using secure API keys
+- **Role-based Access Control**: Different permission levels (user/admin)
+
+### 🛡️ Protection Mechanisms
+- **Rate Limiting**: Per-endpoint rate limits to prevent abuse
+- **CORS Protection**: Origin validation for API access
+- **Input Validation**: XSS prevention and data sanitization
+- **MongoDB Security**: TLS encryption and connection optimization
+
+### 📊 Protected Endpoints
+- `GET /api/stats` - Application statistics (Admin only)
+- `GET /api/users?page=1` - User listing (Admin only)
+- `GET /api/admin/keys` - API key management (Admin only)
+
+### 🔑 Access Methods
+```bash
+# JWT Token Authentication
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" http://localhost:3000/api/stats
+
+# API Key Authentication
+curl -H "X-API-Key: YOUR_API_KEY" http://localhost:3000/api/stats
+```
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -47,7 +80,16 @@ cd shardtalk
 npm install
 ```
 
-### 2. Environment Setup
+### 2. Security Setup
+```bash
+# Generate secure secrets
+node scripts/generate-secrets.js
+
+# Test the setup
+node scripts/test-setup.js
+```
+
+### 3. Environment Setup
 ```bash
 cp env.example .env.local
 ```

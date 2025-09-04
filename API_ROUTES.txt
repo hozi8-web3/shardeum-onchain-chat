@@ -1,7 +1,0 @@
-GET /api/users?address=0x...
-GET /api/users?username=alice
-POST /api/users
-POST /api/activity
-GET /api/activity?address=0xabc...&type=send_message&page=1&limit=20
-GET /api/users?page=1&limit=20
-GET /api/stats

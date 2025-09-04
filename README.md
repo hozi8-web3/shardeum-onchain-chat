@@ -42,8 +42,8 @@ A **decentralized chat application** built on the **Shardeum Unstablenet** block
 
 ### 1. Clone & Install
 ```bash
-git clone <your-repo-url>
-cd shardtalk
+git clone https://github.com/hozi8-web3/shardeum-onchain-chat
+cd shardeum-onchain-chat
 npm install
 ```
 
@@ -173,13 +173,6 @@ npm run test         # Run Hardhat tests
 - `getTotalMessageCount()`: Get total number of messages
 - `getCooldownRemaining(address user)`: Check user's cooldown status
 
-## 🌐 Deployment
-
-### Vercel Deployment
-1. Push code to GitHub
-2. Connect repository to Vercel
-3. Set environment variables in Vercel dashboard
-4. Deploy automatically on push
 
 ### Environment Variables for Production
 ```env
@@ -188,11 +181,6 @@ NEXT_PUBLIC_RPC_URL=https://api-unstable.shardeum.org
 NEXT_PUBLIC_CHAIN_ID=8080
 NEXT_PUBLIC_EXPLORER_URL=https://explorer-unstable.shardeum.org
 ```
-
-### Custom Domain
-- Add custom domain in Vercel dashboard
-- Update DNS records as instructed
-- Enable HTTPS automatically
 
 ## 🔒 Security Features
 
@@ -236,29 +224,10 @@ Typical gas costs on Shardeum Unstablenet:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- **Shardeum Team** for the amazing blockchain infrastructure
-- **Ethereum Community** for the Solidity language and tools
-- **Next.js Team** for the excellent React framework
-- **TailwindCSS** for the beautiful UI components
-
-## 📞 Support
 
 - **Issues**: [GitHub Issues](https://github.com/yourusername/shardtalk/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/shardtalk/discussions)
-- **Documentation**: [Project Wiki](https://github.com/yourusername/shardtalk/wiki)
 
-## 🔮 Roadmap
-
-- [ ] **ENS Integration**: Display ENS names instead of addresses
-- [ ] **Message Encryption**: End-to-end encryption for private chats
-- [ ] **File Sharing**: On-chain file storage and sharing
-- [ ] **Chat Rooms**: Multiple themed chat rooms
-- [ ] **Mobile App**: React Native mobile application
-- [ ] **Push Notifications**: Real-time message notifications
-- [ ] **Message Reactions**: Like, love, and react to messages
-- [ ] **User Profiles**: Customizable user profiles and avatars
 
 ---
 

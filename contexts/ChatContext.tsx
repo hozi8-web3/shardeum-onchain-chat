@@ -266,6 +266,12 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       try {
         tx = await contract.postMessage(content)
         console.log('Transaction hash:', tx.hash)
+        // Log activity best-effort
+        fetch('/api/activity', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address: signerAddress, type: 'send_message', metadata: { length: content.length } })
+        }).catch(() => {})
       } catch (contractCallError: any) {
         console.error('Contract call failed:', contractCallError)
         

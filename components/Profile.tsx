@@ -7,21 +7,42 @@ interface ProfileProps {
   account: string
   onUsernameChange: (username: string) => void
   onDisconnect?: () => void
+  forceEdit?: boolean
+  onClose?: () => void
 }
 
-const Profile: React.FC<ProfileProps> = ({ account, onUsernameChange, onDisconnect }) => {
+const Profile: React.FC<ProfileProps> = ({ account, onUsernameChange, onDisconnect, forceEdit, onClose }) => {
   const [username, setUsername] = useState('')
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(!!forceEdit)
   const [tempUsername, setTempUsername] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Load username from localStorage on component mount
+  // Load username from backend on mount
   useEffect(() => {
-    const savedUsername = localStorage.getItem(`username_${account.toLowerCase()}`)
-    if (savedUsername) {
-      setUsername(savedUsername)
-      onUsernameChange(savedUsername)
+    const load = async () => {
+      try {
+        const res = await fetch(`/api/users?address=${account.toLowerCase()}`, { cache: 'no-store' })
+        if (res.ok) {
+          const data = await res.json()
+          const u = data?.user
+          if (u?.username) {
+            setUsername(u.username)
+            onUsernameChange(u.username)
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load username', e)
+      }
     }
+    load()
+    // Listen for edit requests from parent UI
+    const handleEdit = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { username?: string }
+      setTempUsername(detail?.username || username)
+      setIsEditing(true)
+    }
+    window.addEventListener('editUsername', handleEdit as EventListener)
+    return () => window.removeEventListener('editUsername', handleEdit as EventListener)
   }, [account, onUsernameChange])
 
   const handleSaveUsername = async () => {
@@ -29,14 +50,29 @@ const Profile: React.FC<ProfileProps> = ({ account, onUsernameChange, onDisconne
     
     setIsLoading(true)
     try {
-      // Save to localStorage
-      localStorage.setItem(`username_${account.toLowerCase()}`, tempUsername.trim())
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: account, username: tempUsername.trim() })
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data?.error || 'Failed to save username')
+      }
       setUsername(tempUsername.trim())
       onUsernameChange(tempUsername.trim())
       setIsEditing(false)
       setTempUsername('')
+      if (onClose) onClose()
+      // log activity
+      fetch('/api/activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: account, type: 'update_username', metadata: { username: tempUsername.trim() } })
+      }).catch(() => {})
     } catch (error) {
       console.error('Error saving username:', error)
+      alert((error as Error).message)
     } finally {
       setIsLoading(false)
     }
@@ -45,6 +81,7 @@ const Profile: React.FC<ProfileProps> = ({ account, onUsernameChange, onDisconne
   const handleCancel = () => {
     setIsEditing(false)
     setTempUsername('')
+    if (onClose) onClose()
   }
 
   const formatAddress = (address: string) => {

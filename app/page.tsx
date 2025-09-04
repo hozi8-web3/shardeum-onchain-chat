@@ -40,6 +40,9 @@ export default function Home() {
           setAccount(accounts[0])
           const provider = new ethers.BrowserProvider(window.ethereum)
           setProvider(provider)
+          // log activity and ensure user exists
+          fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address: accounts[0] }) }).catch(() => {})
+          fetch('/api/activity', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address: accounts[0], type: 'connect' }) }).catch(() => {})
         }
       } catch (error) {
         console.error('Error connecting wallet:', error)
@@ -53,6 +56,10 @@ export default function Home() {
     setIsConnected(false)
     setAccount(null)
     setProvider(null)
+    // best-effort log
+    try {
+      fetch('/api/activity', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address: account, type: 'disconnect' }) })
+    } catch {}
   }
 
   return (

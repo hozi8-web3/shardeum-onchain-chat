@@ -32,6 +32,7 @@ const MessageList: React.FC<MessageListProps> = ({
   const [isNearBottom, setIsNearBottom] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
   const lastScrollTop = useRef(0)
+  const [addressToUsername, setAddressToUsername] = useState<Record<string, string>>({})
 
   // WhatsApp-style scroll handling
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -82,6 +83,37 @@ const MessageList: React.FC<MessageListProps> = ({
       }
     }
   }, [messages, autoScroll])
+
+  // Fetch usernames for unique senders from backend and cache locally
+  useEffect(() => {
+    const uniqueAddresses = Array.from(new Set(messages.map(m => m.sender.toLowerCase())))
+    const missing = uniqueAddresses.filter(a => !addressToUsername[a])
+    if (missing.length === 0) return
+    ;(async () => {
+      try {
+        const results = await Promise.all(
+          missing.map(addr => 
+            fetch(`/api/users?address=${addr}`, { cache: 'no-store' })
+              .then(r => r.ok ? r.json() : null)
+              .catch(() => null)
+          )
+        )
+        const map: Record<string, string> = {}
+        results.forEach((res, idx) => {
+          const addr = missing[idx]
+          const u = res?.user
+          if (u?.username) {
+            map[addr] = u.username as string
+          }
+        })
+        if (Object.keys(map).length > 0) {
+          setAddressToUsername(prev => ({ ...prev, ...map }))
+        }
+      } catch (e) {
+        // ignore
+      }
+    })()
+  }, [messages])
 
   if (messages.length === 0 && !loading) {
     return (
@@ -151,6 +183,7 @@ const MessageList: React.FC<MessageListProps> = ({
             <MessageItem
               message={message}
               isOwnMessage={message.sender.toLowerCase() === currentUser.toLowerCase()}
+              usernameMap={addressToUsername}
             />
           </div>
         ))}

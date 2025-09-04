@@ -13,9 +13,10 @@ interface Message {
 interface MessageItemProps {
   message: Message
   isOwnMessage: boolean
+  usernameMap?: Record<string, string>
 }
 
-const MessageItem: React.FC<MessageItemProps> = ({ message, isOwnMessage }) => {
+const MessageItem: React.FC<MessageItemProps> = ({ message, isOwnMessage, usernameMap }) => {
   const [showTimestamp, setShowTimestamp] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
 
@@ -32,9 +33,9 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, isOwnMessage }) => {
   }
 
   const getDisplayName = (address: string) => {
-    // Try to get username from localStorage
-    const username = localStorage.getItem(`username_${address.toLowerCase()}`)
-    return username || formatAddress(address)
+    const fromMap = usernameMap?.[address.toLowerCase()]
+    if (fromMap && fromMap.length > 0) return fromMap
+    return formatAddress(address)
   }
 
   const getAvatarColor = (address: string) => {

@@ -247,7 +247,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ account, provider }) => {
           <div className="text-center">
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-gray-300">
               <span>Made with ❤️ by</span>
-              <span className="font-semibold text-blue-400">HOZI</span>
+              <a 
+                href="https://twitter.com/yourusername" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="font-semibold text-blue-400"
+              >
+              HOZI
+            </a>
+
               <span>•</span>
               <span>Powered by Shardeum</span>
             </div>

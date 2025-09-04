@@ -24,9 +24,8 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between py-1">
           {/* Left Side - Title */}
           <div className="flex items-center">
-            <h1 className="text-base sm:text-lg font-bold text-gradient">
-              ShardTalk
-            </h1>
+            <img src="/logo.svg" alt="SHARDTALK" className="h-6 w-auto mr-2" />
+            <h1 className="text-base sm:text-lg font-bold text-gradient">ShardTalk</h1>
           </div>
           
           {/* Right Side - Wallet Connection with Integrated Network Info */}

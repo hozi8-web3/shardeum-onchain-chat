@@ -1,0 +1,376 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gray-900 text-gray-100;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  
+  /* Hide Next.js logo and improve mobile experience */
+  .nextjs-toast-errors-parent {
+    display: none !important;
+  }
+  
+  /* Hide Next.js logo and branding */
+  [data-nextjs-dev-tools-button="true"],
+  [data-next-mark="true"],
+  button[data-nextjs-dev-tools-button="true"],
+  button[data-next-mark="true"],
+  [data-nextjs-dev-tools-button],
+  [data-next-mark] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  /* Hide Next.js Dev Tools completely */
+  [data-nextjs-dev-tools-button],
+  [data-next-mark],
+  .nextjs-dev-tools,
+  .nextjs-dev-tools-button {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  /* Hide Next.js development overlay completely */
+  [data-nextjs-dev-tools],
+  [data-nextjs-dev-tools-overlay],
+  .nextjs-dev-tools-overlay,
+  .nextjs-dev-tools-panel,
+  .nextjs-dev-tools-menu,
+  .nextjs-dev-tools-content {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+  }
+  
+  /* Hide any Next.js floating elements */
+  [data-nextjs-dev-tools-floating],
+  .nextjs-dev-tools-floating,
+  .nextjs-dev-tools-tooltip {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  /* Hide Next.js development server info */
+  [data-nextjs-dev-tools-server-info],
+  .nextjs-dev-tools-server-info {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  /* Force hide any remaining Next.js elements */
+  *[class*="nextjs-dev-tools"],
+  *[data-*="nextjs"],
+  *[id*="nextjs"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  /* Additional aggressive hiding for Next.js dev tools */
+  [data-nextjs-dev-tools-button="true"],
+  [data-next-mark="true"],
+  button[data-nextjs-dev-tools-button="true"],
+  button[data-next-mark="true"],
+  div[data-nextjs-dev-tools-button="true"],
+  div[data-next-mark="true"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  /* Hide any Next.js development server overlay */
+  body > div[data-nextjs-dev-tools],
+  body > div[class*="nextjs"],
+  body > button[data-nextjs-dev-tools-button],
+  body > button[data-next-mark] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: fixed !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    z-index: -9999 !important;
+  }
+  
+  /* Hide any Next.js watermarks or icons */
+  .nextjs-toast-errors,
+  .nextjs-toast-errors-parent,
+  [data-nextjs-toast],
+  .nextjs-toast-errors-parent > div {
+    display: none !important;
+  }
+  
+  /* Improve mobile scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile-specific improvements */
+  @media (max-width: 640px) {
+    .card {
+      @apply p-3;
+    }
+    
+    .btn-primary, .btn-secondary {
+      @apply py-3 px-4 text-sm;
+    }
+    
+    .input-field {
+      @apply text-base;
+    }
+    
+    /* Mobile button improvements */
+    .btn-primary {
+      @apply min-h-[96px] sm:min-h-0;
+    }
+    
+    /* Mobile header improvements */
+    .header-glass {
+      padding: 0.125rem 0;
+    }
+    
+    /* Mobile wallet component improvements */
+    .wallet-component-mobile {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.125rem;
+    }
+    
+    .wallet-component-mobile .network-profile {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    
+    .wallet-component-mobile .network-info {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm sm:text-base shadow-lg hover:shadow-xl hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-gray-100 font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm sm:text-base border border-gray-600;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 placeholder-gray-400;
+  }
+  
+  .card {
+    @apply bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-700/50 p-4 sm:p-6;
+  }
+  
+  /* Enhanced glass effect for header - ultra compact */
+  .header-glass {
+    background: rgba(17, 24, 39, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(75, 85, 99, 0.2);
+    box-shadow: 
+      0 2px 8px 0 rgba(0, 0, 0, 0.37),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    min-height: 2.5rem;
+  }
+  
+  /* Mobile header improvements */
+  @media (max-width: 640px) {
+    header {
+      @apply py-0.5;
+    }
+  }
+  
+  /* Header improvements */
+  header {
+    @apply header-glass;
+  }
+  
+  /* Enhanced header spacing */
+  header h1 {
+    @apply tracking-tight;
+  }
+  
+  /* Footer improvements */
+  footer {
+    @apply bg-gray-900/90 backdrop-blur-md border-gray-700;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+  
+  .bg-glass {
+    @apply bg-gray-800/30 backdrop-blur-md border border-gray-700/50;
+  }
+  
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+  }
+  
+  /* WhatsApp-style animations */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+  
+  .animate-message-appear {
+    animation: messageAppear 0.4s ease-out forwards;
+  }
+  
+  .animate-bounce-in {
+    animation: bounceIn 0.5s ease-out forwards;
+  }
+  
+  /* Smooth scrolling for messages */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar for messages */
+  .messages-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .messages-scrollbar::-webkit-scrollbar-track {
+    background: rgba(55, 65, 81, 0.3);
+    border-radius: 3px;
+  }
+  
+  .messages-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.5);
+    border-radius: 3px;
+  }
+  
+  .messages-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.7);
+  }
+}
+
+/* Custom keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes messageAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(20px);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05) translateY(5px);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(0.95) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Real-time message indicators */
+.message-status {
+  transition: all 0.2s ease-in-out;
+}
+
+.message-status.sending {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.message-status.sent {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Enhanced focus states */
+.focus-visible:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Improved hover effects */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

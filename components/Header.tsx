@@ -3,21 +3,7 @@
 import { useChat } from '../contexts/ChatContext'
 import WalletConnect from './WalletConnect'
 
-interface HeaderProps {
-  isConnected: boolean
-  account: string | null
-  onConnect: () => void
-  onDisconnect: () => void
-}
-
-const Header: React.FC<HeaderProps> = ({
-  isConnected,
-  account,
-  onConnect,
-  onDisconnect,
-}) => {
-  const { networkStatus, switchToShardeum } = useChat()
-
+const Header: React.FC = () => {
   return (
     <header className="header-glass sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,14 +15,7 @@ const Header: React.FC<HeaderProps> = ({
           </div>
           
           {/* Right Side - Wallet Connection with Integrated Network Info */}
-          <WalletConnect
-            isConnected={isConnected}
-            account={account}
-            onConnect={onConnect}
-            onDisconnect={onDisconnect}
-            networkStatus={networkStatus}
-            onSwitchNetwork={switchToShardeum}
-          />
+          <WalletConnect />
         </div>
       </div>
     </header>

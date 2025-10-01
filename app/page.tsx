@@ -1,82 +1,51 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import { useAccount } from 'wagmi'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { ethers } from 'ethers'
 import ChatInterface from '../components/ChatInterface'
 import Header from '../components/Header'
 import { ChatProvider } from '../contexts/ChatContext'
 
 export default function Home() {
-  const [isConnected, setIsConnected] = useState(false)
-  const [account, setAccount] = useState<string | null>(null)
-  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null)
+  const { address, isConnected } = useAccount()
 
   useEffect(() => {
-    checkConnection()
-  }, [])
-
-  const checkConnection = async () => {
-    if (typeof window !== 'undefined' && window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' })
-        if (accounts.length > 0) {
-          setIsConnected(true)
-          setAccount(accounts[0])
-          const provider = new ethers.BrowserProvider(window.ethereum)
-          setProvider(provider)
-        }
-      } catch (error) {
-        console.error('Error checking connection:', error)
-      }
+    if (isConnected && address) {
+      // Log activity and ensure user exists
+      fetch('/api/users', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ address: address.toLowerCase() }) 
+      }).catch(() => {})
+      
+      fetch('/api/activity', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ address: address.toLowerCase(), type: 'connect' }) 
+      }).catch(() => {})
     }
-  }
+  }, [isConnected, address])
 
-  const connectWallet = async () => {
+  // Get provider from window.ethereum
+  const getProvider = () => {
     if (typeof window !== 'undefined' && window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-        if (accounts.length > 0) {
-          setIsConnected(true)
-          setAccount(accounts[0])
-          const provider = new ethers.BrowserProvider(window.ethereum)
-          setProvider(provider)
-          // log activity and ensure user exists
-          fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address: accounts[0] }) }).catch(() => {})
-          fetch('/api/activity', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address: accounts[0], type: 'connect' }) }).catch(() => {})
-        }
-      } catch (error) {
-        console.error('Error connecting wallet:', error)
-      }
-    } else {
-      alert('Please install MetaMask!')
+      return new ethers.BrowserProvider(window.ethereum)
     }
-  }
-
-  const disconnectWallet = () => {
-    setIsConnected(false)
-    setAccount(null)
-    setProvider(null)
-    // best-effort log
-    try {
-      fetch('/api/activity', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address: account, type: 'disconnect' }) })
-    } catch {}
+    return null
   }
 
   return (
     <ChatProvider>
       <div className="min-h-screen">
-        {/* Header */}
-        <Header
-          isConnected={isConnected}
-          account={account}
-          onConnect={connectWallet}
-          onDisconnect={disconnectWallet}
-        />
+        {/* Header with WalletConnect component */}
+        <Header />
 
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {isConnected && provider ? (
-            <ChatInterface account={account!} provider={provider} />
+          {isConnected && address ? (
+            <ChatInterface account={address} provider={getProvider()} />
           ) : (
             <div className="text-center py-20">
               <div className="max-w-md mx-auto">
@@ -93,12 +62,22 @@ export default function Home() {
                 <p className="text-lg text-gray-600 mb-8">
                   Connect your wallet to join the decentralized chatroom where all messages are stored on the blockchain.
                 </p>
-                <button
-                  onClick={connectWallet}
-                  className="btn-primary text-lg px-8 py-3"
-                >
-                  Connect Wallet
-                </button>
+                
+                {/* Connect Button - Same as Header */}
+                <ConnectButton.Custom>
+                  {({ openConnectModal }) => (
+                    <button
+                      onClick={openConnectModal}
+                      className="btn-primary text-lg px-8 py-3 flex items-center justify-center space-x-2 mx-auto"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                      <span>Connect Wallet</span>
+                    </button>
+                  )}
+                </ConnectButton.Custom>
+                
                 <div className="mt-6 text-sm text-gray-500">
                   <p>Network: Shardeum Unstablenet (Chain ID: 8080)</p>
                   <p>RPC: api-unstable.shardeum.org</p>

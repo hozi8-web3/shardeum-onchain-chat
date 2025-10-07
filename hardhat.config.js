@@ -6,8 +6,8 @@ module.exports = {
   solidity: "0.8.19",
   networks: {
     shardeum: {
-      url: "https://api-unstable.shardeum.org",
-      chainId: 8080,
+      url: "https://api-mezame.shardeum.org",
+      chainId: 8119,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       gasPrice: "auto",
       gas: "auto",
@@ -23,10 +23,10 @@ module.exports = {
     customChains: [
       {
         network: "shardeum",
-        chainId: 8080,
+        chainId: 8119,
         urls: {
-          apiURL: "https://explorer-unstable.shardeum.org/api",
-          browserURL: "https://explorer-unstable.shardeum.org",
+          apiURL: "https://explorer-mezame.shardeum.org/api",
+          browserURL: "https://explorer-mezame.shardeum.org",
         },
       },
     ],

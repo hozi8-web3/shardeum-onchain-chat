@@ -10,11 +10,11 @@ import {
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
 import '@rainbow-me/rainbowkit/styles.css'
 
-// Define Shardeum Unstablenet custom chain
-const shardeumUnstablenet = {
-  id: 8080,
-  name: 'Shardeum Unstablenet',
-  network: 'shardeum-unstablenet',
+// Define Shardeum EVM Testnet (Mezame) custom chain
+const shardeumEvmTestnet = {
+  id: 8119,
+  name: 'Shardeum EVM Testnet',
+  network: 'shardeum-evm-testnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Shardeum',
@@ -22,16 +22,16 @@ const shardeumUnstablenet = {
   },
   rpcUrls: {
     default: {
-      http: ['https://api-unstable.shardeum.org'],
+      http: ['https://api-mezame.shardeum.org'],
     },
     public: {
-      http: ['https://api-unstable.shardeum.org'],
+      http: ['https://api-mezame.shardeum.org'],
     },
   },
   blockExplorers: {
     default: {
       name: 'Shardeum Explorer',
-      url: 'https://explorer-unstable.shardeum.org',
+      url: 'https://explorer-mezame.shardeum.org',
     },
   },
   testnet: true,
@@ -42,7 +42,7 @@ const config = getDefaultConfig({
   appName: 'ShardTalk',
   projectId:
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID_HERE',
-  chains: [shardeumUnstablenet as any, mainnet, polygon, optimism, arbitrum],
+  chains: [shardeumEvmTestnet as any, mainnet, polygon, optimism, arbitrum],
   ssr: true, // Enable SSR support
 })
 

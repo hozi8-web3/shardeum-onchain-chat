@@ -15,7 +15,7 @@ const GasEstimate: React.FC<GasEstimateProps> = ({ provider }) => {
   const [loading, setLoading] = useState(false)
 
   // Contract address - update this after deployment
-  const CONTRACT_ADDRESS = '0x59D8e38A6A5dfbC38993a3823e0C602CA91AbE53'
+  const CONTRACT_ADDRESS = '0x9b137bde888021ca8174ac2621a59b14afa4fee6'
 
   useEffect(() => {
     estimateGas()

@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'ShardTalk',
-  description: 'A decentralized chat application built on Shardeum Unstablenet blockchain',
+  description: 'A decentralized chat application built on Shardeum EVM Testnet (Mezame) blockchain',
   icons: {
     icon: '/favicon.svg',
   },

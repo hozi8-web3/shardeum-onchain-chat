@@ -101,8 +101,8 @@ export default function Home() {
                 </ConnectButton.Custom>
 
                 <div className="mt-6 text-sm text-gray-500">
-                  <p>Network: Shardeum Unstablenet (Chain ID: 8080)</p>
-                  <p>RPC: api-unstable.shardeum.org</p>
+                  <p>Network: Shardeum EVM Testnet (Chain ID: 8119)</p>
+                  <p>RPC: api-mezame.shardeum.org</p>
                 </div>
               </div>
             </div>

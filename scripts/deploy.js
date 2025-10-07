@@ -34,7 +34,7 @@ async function main() {
   
   console.log("ShardeumChat deployed to:", contractAddress);
   console.log("Network:", hre.network.name);
-  console.log("Explorer URL:", `https://explorer-unstable.shardeum.org/address/${contractAddress}`);
+  console.log("Explorer URL:", `https://explorer-mezame.shardeum.org/address/${contractAddress}`);
   
   // Verify the contract on explorer
   if (hre.network.name === "shardeum") {

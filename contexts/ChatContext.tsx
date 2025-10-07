@@ -33,7 +33,7 @@ interface ChatContextType {
 const ChatContext = createContext<ChatContextType | undefined>(undefined)
 
 // Contract address - you'll need to update this after deployment
-const CONTRACT_ADDRESS = '0x59D8e38A6A5dfbC38993a3823e0C602CA91AbE53'
+const CONTRACT_ADDRESS = '0x9b137bde888021ca8174ac2621a59b14afa4fee6'
 
 export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -68,9 +68,9 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Check network connection
       try {
         const network = await provider.getNetwork()
-        if (network.chainId !== 8080n) {
+        if (network.chainId !== 8119n) {
           setNetworkStatus('wrong-network')
-          throw new Error(`Please switch to Shardeum Unstablenet (Chain ID: 8080). Current chain: ${network.chainId}`)
+          throw new Error(`Please switch to Shardeum EVM Testnet (Chain ID: 8119). Current chain: ${network.chainId}`)
         }
         setNetworkStatus('connected')
       } catch (networkError) {
@@ -189,8 +189,8 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Check network connection
       try {
         const network = await provider.getNetwork()
-        if (network.chainId !== 8080n) {
-          throw new Error(`Please switch to Shardeum Unstablenet (Chain ID: 8080). Current chain: ${network.chainId}`)
+        if (network.chainId !== 8119n) {
+          throw new Error(`Please switch to Shardeum EVM Testnet (Chain ID: 8119). Current chain: ${network.chainId}`)
         }
       } catch (networkError) {
         throw new Error('Failed to connect to network. Please check your MetaMask connection.')
@@ -410,7 +410,7 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Check network connection
       try {
         const network = await provider.getNetwork()
-        if (network.chainId !== 8080n) {
+        if (network.chainId !== 8119n) {
           return
         }
       } catch (networkError) {
@@ -446,10 +446,10 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         throw new Error('MetaMask not installed')
       }
 
-      // Request to switch to Shardeum Unstablenet
+      // Request to switch to Shardeum EVM Testnet (Mezame)
       await window.ethereum!.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x1f90' }], // 8080 in hex
+        params: [{ chainId: '0x1fbf' }], // 8119 in hex
       })
       
       setNetworkStatus('connected')
@@ -462,15 +462,15 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           await window.ethereum!.request({
             method: 'wallet_addEthereumChain',
             params: [{
-              chainId: '0x1f90', // 8080 in hex
-              chainName: 'Shardeum Unstablenet',
+              chainId: '0x1fbf', // 8119 in hex
+              chainName: 'Shardeum EVM Testnet',
               nativeCurrency: {
                 name: 'SHM',
                 symbol: 'SHM',
                 decimals: 18,
               },
-              rpcUrls: ['https://api-unstable.shardeum.org'],
-              blockExplorerUrls: ['https://explorer-unstable.shardeum.org'],
+              rpcUrls: ['https://api-mezame.shardeum.org'],
+              blockExplorerUrls: ['https://explorer-mezame.shardeum.org'],
             }],
           })
           setNetworkStatus('connected')

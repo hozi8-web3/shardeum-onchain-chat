@@ -152,7 +152,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ account, provider }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
                 <span className="text-yellow-200 text-sm">
-                  You're not connected to Shardeum Unstablenet. Please switch networks to continue.
+                  You're not connected to Shardeum EVM Testnet. Please switch networks to continue.
                 </span>
               </div>
               <button
@@ -230,7 +230,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ account, provider }) => {
             💬 Messages are stored permanently on the blockchain • 
             ⏱️ 10-second cooldown between messages • 
             🔗 View on explorer: <a 
-              href="https://explorer-unstable.shardeum.org" 
+              href="https://explorer-mezame.shardeum.org" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-blue-400 hover:text-blue-300 underline transition-colors"

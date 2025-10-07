@@ -18,8 +18,8 @@ const WalletConnect: React.FC = () => {
   const [tempUsername, setTempUsername] = useState<string>('')
   const [isSaving, setIsSaving] = useState<boolean>(false)
 
-  // Shardeum Unstablenet Chain ID
-  const SHARDEUM_CHAIN_ID = 8080
+  // Shardeum EVM Testnet (Mezame) Chain ID
+  const SHARDEUM_CHAIN_ID = 8119
 
   useEffect(() => {
     if (isConnected && address) {
@@ -112,7 +112,7 @@ const WalletConnect: React.FC = () => {
   // Get network name
   const getNetworkName = () => {
     if (!chain) return 'Unknown'
-    if (chain.id === SHARDEUM_CHAIN_ID) return 'Unstablenet'
+    if (chain.id === SHARDEUM_CHAIN_ID) return 'Shardeum EVM Testnet'
     return chain.name || `Chain ${chain.id}`
   }
 

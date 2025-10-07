@@ -1,8 +1,8 @@
 # 🚀 ShardTalk
 
-A **decentralized chat application** built on the **Shardeum Unstablenet** blockchain where all messages are permanently stored on-chain. This dApp demonstrates the power of blockchain technology for censorship-resistant, permanent communication.
+A **decentralized chat application** built on the **Shardeum EVM Testnet (Mezame)** blockchain where all messages are permanently stored on-chain. This dApp demonstrates the power of blockchain technology for censorship-resistant, permanent communication.
 
-![Shardeum Chat](https://img.shields.io/badge/Shardeum-Unstablenet-purple)
+![Shardeum Chat](https://img.shields.io/badge/Shardeum-EVM%20Testnet%20(Mezame)-purple)
 ![Solidity](https://img.shields.io/badge/Solidity-0.8.19-blue)
 ![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black)
 ![Ethers.js](https://img.shields.io/badge/Ethers.js-6.8.1-orange)
@@ -61,13 +61,13 @@ PRIVATE_KEY=your_private_key_here
 NEXT_PUBLIC_CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000
 
 # Shardeum RPC URL
-NEXT_PUBLIC_RPC_URL=https://api-unstable.shardeum.org
+NEXT_PUBLIC_RPC_URL=https://api-mezame.shardeum.org
 
 # Chain ID
-NEXT_PUBLIC_CHAIN_ID=8080
+NEXT_PUBLIC_CHAIN_ID=8119
 
 # Explorer URL
-NEXT_PUBLIC_EXPLORER_URL=https://explorer-unstable.shardeum.org
+NEXT_PUBLIC_EXPLORER_URL=https://explorer-mezame.shardeum.org
 ```
 
 ### 3. Deploy Smart Contract
@@ -75,14 +75,14 @@ NEXT_PUBLIC_EXPLORER_URL=https://explorer-unstable.shardeum.org
 # Compile contract
 npm run compile
 
-# Deploy to Shardeum Unstablenet
+# Deploy to Shardeum EVM Testnet (Mezame)
 npm run deploy
 ```
 
 **Important**: After deployment, update the contract address in:
 - `.env.local`
-- `contexts/ChatContext.tsx` (line 32)
-- `components/GasEstimate.tsx` (line 20)
+- `contexts/ChatContext.tsx`
+- `components/GasEstimate.tsx`
 
 ### 4. Run Frontend
 ```bash
@@ -94,12 +94,12 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 🔧 Configuration
 
 ### MetaMask Setup
-1. Add Shardeum Unstablenet to MetaMask:
-   - **Network Name**: Shardeum Unstablenet
-   - **RPC URL**: `https://api-unstable.shardeum.org`
-   - **Chain ID**: `8080`
+1. Add Shardeum EVM Testnet (Mezame) to MetaMask:
+   - **Network Name**: Shardeum EVM Testnet
+   - **RPC URL**: `https://api-mezame.shardeum.org`
+   - **Chain ID**: `8119`
    - **Currency Symbol**: `SHM`
-   - **Block Explorer**: `https://explorer-unstable.shardeum.org`
+   - **Block Explorer**: `https://explorer-mezame.shardeum.org`
 
 2. Get testnet SHM tokens from the [Shardeum Faucet](https://faucet.shardeum.org/)
 
@@ -116,7 +116,7 @@ The deployment script will automatically attempt verification.
 ### Connecting Wallet
 1. Click "Connect Wallet" button
 2. Approve MetaMask connection
-3. Ensure you're on Shardeum Unstablenet network
+3. Ensure you're on Shardeum EVM Testnet (Mezame) network
 
 ### Sending Messages
 1. Type your message (max 500 characters)
@@ -177,9 +177,9 @@ npm run test         # Run Hardhat tests
 ### Environment Variables for Production
 ```env
 NEXT_PUBLIC_CONTRACT_ADDRESS=your_deployed_contract_address
-NEXT_PUBLIC_RPC_URL=https://api-unstable.shardeum.org
-NEXT_PUBLIC_CHAIN_ID=8080
-NEXT_PUBLIC_EXPLORER_URL=https://explorer-unstable.shardeum.org
+NEXT_PUBLIC_RPC_URL=https://api-mezame.shardeum.org
+NEXT_PUBLIC_CHAIN_ID=8119
+NEXT_PUBLIC_EXPLORER_URL=https://explorer-mezame.shardeum.org
 ```
 
 ## 🔒 Security Features
@@ -205,7 +205,7 @@ npm run build
 
 ## 📊 Gas Costs
 
-Typical gas costs on Shardeum Unstablenet:
+Typical gas costs on Shardeum EVM Testnet (Mezame):
 - **Message Posting**: ~50,000 gas
 - **Gas Price**: ~1 Gwei
 - **Total Cost**: ~0.00005 SHM per message

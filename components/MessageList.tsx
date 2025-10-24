@@ -170,7 +170,7 @@ const MessageList: React.FC<MessageListProps> = ({
       >
         {sortedMessages.map((message, index) => (
           <div
-            key={`${message.messageId}-${message.timestamp}`}
+            key={`${message.messageId}-${message.sender}-${message.timestamp}`}
             className={`transition-all duration-300 ease-out ${
               message.isPending 
                 ? 'animate-pulse opacity-80' 

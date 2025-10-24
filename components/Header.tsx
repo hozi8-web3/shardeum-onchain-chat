@@ -1,9 +1,18 @@
-'use client'
+ 'use client'
 
 import { useChat } from '../contexts/ChatContext'
 import WalletConnect from './WalletConnect'
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isConnected?: boolean
+  account?: string | null
+  onConnect?: () => void
+  onDisconnect?: () => void
+}
+
+// Header accepts optional connection props to allow either passing
+// connection state from the parent or using the internal WalletConnect.
+const Header: React.FC<HeaderProps> = ({ isConnected, account, onConnect, onDisconnect }) => {
   return (
     <header className="header-glass sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,3 +32,4 @@ const Header: React.FC = () => {
 }
 
 export default Header
+
